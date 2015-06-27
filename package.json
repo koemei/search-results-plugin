@@ -1,0 +1,25 @@
+{
+  "name": "koemei-search-results-plugin",
+  "description": "A search bar plugin for Koemei",
+  "version": "0.0.1",
+  "private": false,
+  "author": "https://github.com/koemei/search-results-plugin/graphs/contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koemei/search-results-plugin.git"
+  },
+  "engines": {
+    "node": ">=0.10.x",
+    "npm": ">=1.4.x"
+  },
+  "devDependencies": {
+    "gulp": "latest",
+    "gulp-concat": "latest",
+    "gulp-insert": "latest",
+    "gulp-minify-css": "^1.1.6",
+    "gulp-rename": "latest",
+    "gulp-uglify": "latest",
+    "run-sequence": "latest"
+  },
+  "subdomain": "koemei"
+}
