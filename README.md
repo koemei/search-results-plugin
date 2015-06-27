@@ -6,18 +6,18 @@
 ## Files
 * __dev.html__ loads local version of the plugin: `src/search-results.js` and `src/search-results.css`
 
-* __ index.html __loads the production ready plugin: `dist/plugin.bundle.min.js`
+* __index.html__ loads the production ready plugin: `dist/plugin.bundle.min.js`
 
 ## Building the plugin
 run `gulp build`
 
 The following files will be generated inside `dist` folder
 
-* __ style.css__: _copy of the dev css file, not used by plugin but left for developers_
+* __style.css__: _copy of the dev css file, not used by plugin but left for developers_
 * __style.css.min__: _minified css file, loaded by the plugin _
 * __plugin.js__: _copy of development plugin file, left for developers_
 * __plugin.min.js__: _minified version of the plugin_
-* __plugin.bundle.min.js__: _complete package, contains plugin.min.js and typeahead.min.js_
+* __plugin.bundle.min.js__: _complete package, contains plugin.min.js and all dependencies_
 
 
 ## plugin options:
