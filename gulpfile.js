@@ -13,7 +13,7 @@ var runSequence = require('run-sequence');
 
 // copies css file (as style.css) to dist and creates a minified version (style.min.css)
 gulp.task('css', function(){
-  return gulp.src(['src/search-results.css'])
+  return gulp.src(['src/komeiSearchResults.css'])
     .pipe(rename('style.css'))
     .pipe(gulp.dest('dist'))
     .pipe(minifyCss({compatibility: 'ie8'}))
@@ -23,7 +23,7 @@ gulp.task('css', function(){
 
 // copies js file (as plugin.js) to dist and creates a minified version (plugin.min.js)
 gulp.task('ugligy', function(){
-  return gulp.src(['src/search-results.js'])
+  return gulp.src(['src/komeiSearchResults.js'])
     .pipe(rename('plugin.js'))
     .pipe(gulp.dest('dist'))
     .pipe(uglify())
@@ -34,7 +34,7 @@ gulp.task('ugligy', function(){
 // concat all
 gulp.task('concat', function(){
   return gulp.src(['', 'dist/typeahead.min.js', 'dist/plugin.min.js'])
-    .pipe(concat('search-results.min.js'))
+    .pipe(concat('komeiSearchResults.min.js'))
     .pipe(insert.prepend('/*!\n* KoemeiSearchResults.min.js 0.0.1\n*/\n'))
     .pipe(rename('plugin.bundle.min.js'))
     .pipe(gulp.dest('dist'))
