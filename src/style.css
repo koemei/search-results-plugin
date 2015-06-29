@@ -36,6 +36,9 @@
   height: 8px;
 }
 
+.k-results .k-results-footer img {
+  height: 8px;
+}
 .k-results .k-searching {
   padding: 10px;
   display: block;

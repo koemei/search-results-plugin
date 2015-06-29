@@ -1,33 +1,23 @@
-# Search results plugin for  Koemei video platform
+# Search results plugin for Koemei
 
 ## Usage
   ```javascript
-  <script src="dist/plugin.bundle.min.js"></script>
+  // link to the plugin:
+  <script src="dist/koemei-search-results.min.js"></script>
 
-  <!-- Add demo js -->
-  <script type="text/javascript">
-    var komeiSearchResults = new KomeiSearchResults({key: 'YOUR_UNIQUE KEY'});
-    komeiSearchResults.initialize(InputField, ResultsDiv);
-  </script>
-```
-## TODO
-* remove lodash dependency. (using lodash for mixin and extend functions only)
+  // minimal settings
+  var koemeiSearchResults = new KoemeiSearchResults({key: 'EMBED_KEY'});
+  koemeiSearchResults.initialize(InputElement, ResultsDiv);
+  ```
+  __Optional__: You can link to the css directly and set `options.css` to `empty/null`
 
-## Files
-* `dev.html` loads local version of the plugin: `src/search-results.js` and `src/search-results.css`
+    ```javascript
+    <script src="dist/style.min.js"></script>
+    <script src="dist/koemei-search-results.min.js"></script>
 
-* `index.html` loads the production ready plugin: `dist/plugin.bundle.min.js`
-
-## Building the plugin
-run `gulp build`
-
-The following files will be generated inside `dist` folder
-
-* `style.css`: _copy of the dev css file, not used by plugin but left for developers_
-* `style.css.min`: _minified css file, loaded by the plugin _
-* `plugin.js`: _copy of development plugin file, left for developers_
-* `plugin.min.js`: _minified version of the plugin_
-* `plugin.bundle.min.js`: _complete package, contains plugin.min.js and all dependencies_
+    var koemeiSearchResults = new KoemeiSearchResults({key: 'EMBED_KEY', css: ''});
+    koemeiSearchResults.initialize(InputElement, ResultsDiv);
+    ```
 
 
 ## plugin options:
@@ -52,3 +42,20 @@ The following files will be generated inside `dist` folder
 
 
 
+# Development process
+```
+npm install
+
+```
+
+```
+npm start
+
+```
+go to http://localhost:8000
+
+```
+npm run build && npm start
+
+```
+go to http://localhost:8000/prod.html
