@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cousine:400,700">
 
 <!-- Add demo style -->
-<link rel="stylesheet" href="demo/css/main.css" type="text/css" />
+<link rel="stylesheet" href="main.css" type="text/css" />
 
 <!--[if IE]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -28,17 +28,15 @@
 <!-- Add demo js -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.js"></script>
-
-<script src="src/bloodhound.min.js"></script>
-<script src="src/KoemeiInput.js"></script>
-<script src="src/KoemeiEngine.js"></script>
+<link rel="stylesheet" href="../dist/style.css" type="text/css" />
+<script src="../dist/koemei-search-results.min.js"></script>
 
 <script type="text/javascript">
-  var komeiSearchResults = new KomeiSearchResults({key: 'acd6fbc51ef2405ea7e7e3c384b5042f',
-    css: 'src/komeiSearchResults.css'});
+document.addEventListener('DOMContentLoaded', function() {
+  var koemeiSearchResults = new KoemeiSearchResults({key: 'acd6fbc51ef2405ea7e7e3c384b5042f', css: ''});
 
-  komeiSearchResults.initialize(document.getElementById('search'), document.getElementById('k-results'));
+  koemeiSearchResults.initialize(document.getElementById('search'), document.getElementById('k-results'));
+});
 
 </script>
 

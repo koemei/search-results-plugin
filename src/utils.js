@@ -1,133 +1,101 @@
-// var _ = (function() {
-//   'use strict';
+function normalizeQuery(str) {
+  // strips leading whitespace and condenses all whitespace
+  return str.replace(/^\s*/g, '').replace(/\s{2,}/g, ' ');
+}
 
-//   var objectProto =  Object.prototype;
-//   var propertyIsEnumerable =  objectProto.propertyIsEnumerable;
-//   var objToString = objectProto.toString;
-//   return {
-//     isLength: function (value) {
-//       return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= 9007199254740991;
-//     },
-//     isObject: function (value) {
-//       // Avoid a V8 JIT bug in Chrome 19-20.
-//       // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-//       var type = typeof value;
-//       return !!value && (type == 'object' || type == 'function');
-//     },
+exports.areQueriesEquivalent = function areQueriesEquivalent(a, b) {
+  return normalizeQuery(a) === normalizeQuery(b);
+}
 
-//     isFunction: function (value) {
-//       // The use of `Object#toString` avoids issues with the `typeof` operator
-//       // in older versions of Chrome and Safari which return 'function' for regexes
-//       // and Safari 8 equivalents which return 'object' for typed array constructors.
-//       return this.isObject(value) && objToString.call(value) == funcTag;
-//     },
+exports.logError = function logError(message) {
+  if (window.console) {
+    window.console.error(message);
+  }
+};
 
-//     isObjectLike: function (value) {
-//       return !!value && typeof value == 'object';
-//     },
+exports.toHHMMSS = function toHHMMSS(length) {
+  var sec_num = parseInt(length, 10);
+  var hours = Math.floor(sec_num / 3600);
+  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+  var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-//     isArrayLike: function (value) {
-//       return value != null && isLength(getLength(value));
-//     },
+  if (hours < 10) {
+    hours = '0' + hours;
+  }
+  if (minutes < 10) {
+    minutes = '0' + minutes;
+  }
+  if (seconds < 10) {
+    seconds = '0' + seconds;
+  }
 
-//     isArguments: function (value) {
-//       return isObjectLike(value) && isArrayLike(value) &&
-//         hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
-//     },
-//     isString: function (value) {
-//       return typeof value == 'string' || (isObjectLike(value) && objToString.call(value) == stringTag);
-//     },
-//     isIndex: function (value, length) {
-//       value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
-//       length = length == null ? MAX_SAFE_INTEGER : length;
-//       return value > -1 && value % 1 == 0 && value < length;
-//     },
+  hours = (hours > 0) ? hours + ':' : '';
+  var time = hours + minutes + ':' + seconds;
+  return time;
+};
 
-//     getNative: function(object, key) {
-//       var value = object == null ? undefined : object[key];
-//       return isNative(value) ? value : undefined;
-//     },
+exports.loadExternalAsset = function loadExternalAsset(filename, filetype){
+  //if filename is a external JavaScript file
+  if (filetype == 'js') {
+    var fileref = document.createElement('script')
+    fileref.setAttribute('type','text/javascript')
+    fileref.setAttribute('src', filename)
+  }
+  //if filename is an external CSS file
+  else if (filetype == 'css') {
+    var fileref=document.createElement('link')
+    fileref.setAttribute('rel', 'stylesheet')
+    fileref.setAttribute('type', 'text/css')
+    fileref.setAttribute('href', filename)
+  }
 
-//     nativeKeys: this.getNative(Object, 'keys'),
+  if (typeof fileref != 'undefined')
+    document.getElementsByTagName('head')[0].appendChild(fileref)
+};
 
-//     shimKeys: function (object) {
-//       var props = keysIn(object),
-//           propsLength = props.length,
-//           length = propsLength && object.length;
+exports.noop = function noop () {
 
-//       var allowIndexes = !!length && isLength(length) &&
-//         (isArray(object) || isArguments(object) || isString(object));
+};
 
-//       var index = -1,
-//           result = [];
+exports.addParameter = function addParameter(url, paramName, paramValue) {
+  if (!url) return '';
+  if (!paramValue || !paramName) return url;
+  var urlhash;
+  var replaceDuplicates = true;
+  if (url.indexOf('#') > 0) {
+    var cl = url.indexOf('#');
+    urlhash = url.substring(url.indexOf('#'), url.length);
+  } else {
+    urlhash = '';
+    cl = url.length;
+  }
+  var sourceUrl = url.substring(0, cl);
 
-//       while (++index < propsLength) {
-//         var key = props[index];
-//         if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
-//           result.push(key);
-//         }
-//       }
-//       return result;
-//     },
+  var urlParts = sourceUrl.split('?');
+  var newQueryString = "";
 
-//     keys: !this.nativeKeys ? shimKeys : function(object) {
-//       var Ctor = object == null ? undefined : object.constructor;
-//       if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
-//           (typeof object == 'function' ? false : isArrayLike(object))) {
-//         return shimKeys(object);
-//       }
-//       return isObject(object) ? this.nativeKeys(object) : [];
-//     },
+  if (urlParts.length > 1) {
+    var parameters = urlParts[1].split('&');
+    for (var i = 0;
+      (i < parameters.length); i++) {
+      var paramParts = parameters[i].split('=');
 
-//     mixin: function (object, source, options) { // taken from lodash
-//       if (options == null) {
-//         var isObj = this.isObject(source),
-//             props = isObj ? keys(source) : undefined,
-//             methodNames = (props && props.length) ? baseFunctions(source, props) : undefined;
+      if (!(replaceDuplicates && paramParts[0] == paramName)) {
+        if (newQueryString == '') {
+          newQueryString = '?';
+        } else {
+          newQueryString += '&';
+        }
 
-//         if (!(methodNames ? methodNames.length : isObj)) {
-//           methodNames = false;
-//           options = source;
-//           source = object;
-//           object = this;
-//         }
-//       }
-//       if (!methodNames) {
-//         methodNames = baseFunctions(source, keys(source));
-//       }
-//       var chain = true,
-//           index = -1,
-//           isFunc = this.isFunction(object),
-//           length = methodNames.length;
+        newQueryString += paramParts[0] + '=' + (paramParts[1] ? paramParts[1] : '');
+      }
+    }
+  }
 
-//       if (options === false) {
-//         chain = false;
-//       } else if (this.isObject(options) && 'chain' in options) {
-//         chain = options.chain;
-//       }
-//       while (++index < length) {
-//         var methodName = methodNames[index],
-//             func = source[methodName];
+  if (newQueryString == '') newQueryString = '?';
 
-//         object[methodName] = func;
-//         if (isFunc) {
-//           object.prototype[methodName] = (function(func) {
-//             return function() {
-//               var chainAll = this.__chain__;
-//               if (chain || chainAll) {
-//                 var result = object(this.__wrapped__),
-//                     actions = result.__actions__ = arrayCopy(this.__actions__);
+  if (newQueryString !== '' && newQueryString != '?') newQueryString += '&';
+  newQueryString += paramName + '=' + (paramValue ? paramValue : '');
 
-//                 actions.push({ 'func': func, 'args': arguments, 'thisArg': object });
-//                 result.__chain__ = chainAll;
-//                 return result;
-//               }
-//               return func.apply(object, arrayPush([this.value()], arguments));
-//             };
-//           }(func));
-//         }
-//       }
-//       return object;
-//     }
-//   };
-// })();
+  return urlParts[0] + newQueryString + urlhash;
+};

@@ -36,6 +36,9 @@
   height: 8px;
 }
 
+.k-results .k-results-footer img {
+  height: 8px;
+}
 .k-results .k-searching {
   padding: 10px;
   display: block;
@@ -138,7 +141,7 @@
 }
 .k-results .k-suggestion .img-item:after {
   position: absolute;
-  content: "\25B6";
+  content: "\25b6";
   font-family: icon;
   padding: 12px 25px;
   font-size: 20px;

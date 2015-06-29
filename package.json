@@ -1,25 +1,34 @@
 {
   "name": "koemei-search-results-plugin",
   "description": "A search bar plugin for Koemei",
-  "version": "0.0.1",
-  "private": false,
+  "version": "0.0.1-alpha.1",
+  "private": true,
   "author": "https://github.com/koemei/search-results-plugin/graphs/contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/koemei/search-results-plugin.git"
   },
-  "engines": {
-    "node": ">=0.10.x",
-    "npm": ">=1.4.x"
+  "main": "modules/index.js",
+  "scripts": {
+    "build": "./scripts/build.sh",
+    "start": "./scripts/startDevServer.sh",
+    "eslint": "./node_modules/.bin/eslint .",
+    "jscs": "./node_modules/.bin/jscs ./src"
+  },
+  "dependencies": {
+    "object-assign": "^3.0.0",
+    "typeahead.js": "^0.11.1"
   },
   "devDependencies": {
-    "gulp": "latest",
-    "gulp-concat": "latest",
-    "gulp-insert": "latest",
-    "gulp-minify-css": "^1.1.6",
-    "gulp-rename": "latest",
-    "gulp-uglify": "latest",
-    "run-sequence": "latest"
-  },
-  "subdomain": "koemei"
+    "babel": "^5.6.14",
+    "chai": "^3.0.0",
+    "css-loader": "^0.15.1",
+    "extract-text-webpack-plugin": "^0.8.2",
+    "istanbul": "^0.3.17",
+    "json-loader": "^0.5.2",
+    "mocha": "^2.2.5",
+    "run-sequence": "latest",
+    "webpack": "^1.10.0",
+    "webpack-dev-server": "^1.10.1"
+  }
 }
