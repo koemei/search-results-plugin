@@ -30,6 +30,9 @@
   display: block;
   color: #CCC;
 }
+.k-results .k-results-footer icon svg{
+  height: 8px;
+}
 
 .k-results .k-searching {
   padding: 10px;

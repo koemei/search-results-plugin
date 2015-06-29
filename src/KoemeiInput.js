@@ -5,9 +5,7 @@ var KomeiInput = (function() {
   function KomeiInput(el, o) {
     this.el = el;
     this.options = o;
-    this.query = this.getInputValue();
 
-    this.bind();
   }
 
   // static methods
@@ -18,6 +16,13 @@ var KomeiInput = (function() {
 
   // instance methods
   _.mixin(KomeiInput.prototype, {
+    // ### private
+    _initialize: function () {
+      this.query = '';
+      this.bind();
+      this._onInput(); // call once to take into account preset search values
+    },
+
     _onInput: function () {
       this._setQuery(this.getInputValue());
     },
@@ -38,6 +43,11 @@ var KomeiInput = (function() {
       } else if ( hasDifferentWhitespace) {
         this.emit('whitespaceChanged', this.query);
       }
+    },
+
+    // ### public
+    initialize: function () {
+      this._initialize();
     },
 
     getInputValue: function () {
