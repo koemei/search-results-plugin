@@ -19,9 +19,7 @@
 
     <div class="cnt">
       <h2>Search Results</h2>
-      <div id="k-results">
-        bla bla bla
-      </div>
+      <div id="k-results"></div>
     </div>
 
 
@@ -29,14 +27,19 @@
 
 <!-- Add demo js -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-<script src="demo/js/jquery.snippet.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.js"></script>
-<script src="src/komeiSearchResults.js"></script>
+
+<script src="src/bloodhound.min.js"></script>
+<script src="src/KoemeiInput.js"></script>
+<script src="src/KoemeiEngine.js"></script>
 
 <script type="text/javascript">
-  var KomeiSearchResults = new KomeiSearchResults({key: 'acd6fbc51ef2405ea7e7e3c384b5042f'});
+  var komeiSearchResults = new KomeiSearchResults({key: 'acd6fbc51ef2405ea7e7e3c384b5042f',
+    css: 'src/komeiSearchResults.css'});
+
+  komeiSearchResults.initialize(document.getElementById('search'), document.getElementById('k-results'));
+
 </script>
 
 </body>

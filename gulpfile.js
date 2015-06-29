@@ -23,8 +23,8 @@ gulp.task('css', function(){
 
 // copies js file (as plugin.js) to dist and creates a minified version (plugin.min.js)
 gulp.task('ugligy', function(){
-  return gulp.src(['src/komeiSearchResults.js'])
-    .pipe(rename('plugin.js'))
+  return gulp.src(['src/KoemeiInput.js', 'src/KoemeiEngine.js'])
+    .pipe(concat('plugin.js'))
     .pipe(gulp.dest('dist'))
     .pipe(uglify())
     .pipe(rename('plugin.min.js'))
@@ -33,7 +33,7 @@ gulp.task('ugligy', function(){
 
 // concat all
 gulp.task('concat', function(){
-  return gulp.src(['', 'dist/typeahead.min.js', 'dist/plugin.min.js'])
+  return gulp.src(['', 'src/bloodhound.min.js', 'dist/plugin.min.js'])
     .pipe(concat('komeiSearchResults.min.js'))
     .pipe(insert.prepend('/*!\n* KoemeiSearchResults.min.js 0.0.1\n*/\n'))
     .pipe(rename('plugin.bundle.min.js'))
