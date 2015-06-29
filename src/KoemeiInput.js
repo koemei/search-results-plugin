@@ -32,6 +32,7 @@ var KomeiInput = (function() {
       hasDifferentWhitespace = areEquivalent ? this.query.length !== value.length : false;
 
       this.query = value;
+
       if (!areEquivalent) {
         this.emit('queryChanged', this.query);
       } else if ( hasDifferentWhitespace) {
@@ -62,15 +63,16 @@ var KomeiInput = (function() {
       _this.el.onkeyup = function(e) {
         if (!e) e = window.event;
         var keyCode = e.keyCode || e.which;
-        if (keyCode == '13') {
-          // Enter pressed
-          _this._onInput()
-        }
 
-        if (_this.options.mode === 'onType')  _this._onInput();
+        if (_this.options.mode === 'onType')  {
+          _this._onInput();
+        } else { // mode is onEnter
+          if (keyCode == '13') { // Enter pressed
+            _this._onInput();
+          }
+        }
       }
     }
-
   });
 
   return KomeiInput;
