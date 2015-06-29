@@ -28,9 +28,11 @@
   padding: 5px;
   margin-top: 10px;
   display: block;
-  color: #CCC;
+  color: #aeaeae;
+  font-size: 12px;
 }
-.k-results .k-results-footer icon svg{
+
+.k-results .k-results-footer img {
   height: 8px;
 }
 
