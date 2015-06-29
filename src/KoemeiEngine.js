@@ -56,12 +56,10 @@ var KomeiSearchResults = (function() {
 
     _addCSS: function () {
       // append plugin css to page
-      if (this.options.css) $('head').append('<link rel="stylesheet" href="' +
-        this.options.css + '" type="text/css" />');
+      if (this.options.css) loadExternalAsset(this.options.css, 'css')
 
       // append font css to page
-      if (this.options.fontcss) $('head').append('<link rel="stylesheet" href="' +
-        this.options.fontcss + '" type="text/css" />');
+      if (this.options.fontcss) loadExternalAsset(this.options.fontcss, 'css')
     },
 
     _linkElements: function (inputEl, resultEl) {
@@ -354,6 +352,25 @@ var KomeiSearchResults = (function() {
     if (window.console) {
       window.console.error( message );
     }
+  };
+
+  function loadExternalAsset(filename, filetype){
+    //if filename is a external JavaScript file
+    if (filetype == 'js') {
+      var fileref = document.createElement('script')
+      fileref.setAttribute('type','text/javascript')
+      fileref.setAttribute('src', filename)
+    }
+    //if filename is an external CSS file
+    else if (filetype == 'css') {
+      var fileref=document.createElement('link')
+      fileref.setAttribute('rel', 'stylesheet')
+      fileref.setAttribute('type', 'text/css')
+      fileref.setAttribute('href', filename)
+    }
+
+    if (typeof fileref != 'undefined')
+      document.getElementsByTagName('head')[0].appendChild(fileref)
   };
 
   function toHHMMSS (length) {
