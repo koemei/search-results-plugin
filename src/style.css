@@ -71,6 +71,7 @@
 .k-results .k-suggestion .koemei-highlight {
   color: #41b1e5 !important;
   font-weight: normal;
+  display: inline-block;
 }
 
 .k-results .k-suggestion.openOnSelect:hover .title-item,
@@ -193,11 +194,6 @@
 
 .k-results .k-suggestion ul {
   list-style: none;
-}
-
-.koemei-blue,
-.koemei-highlight {
-  color: #41b1e5;
 }
 
 .k-results .k-suggestion .MediaListItem-segments {
