@@ -67,7 +67,8 @@
   background-color: #f2f2f2;
 }
 
-.k-results .k-suggestion .blue {
+.k-results .k-suggestion .blue,
+.k-results .k-suggestion .koemei-highlight {
   color: #41b1e5 !important;
   font-weight: normal;
 }
@@ -193,9 +194,12 @@
 .k-results .k-suggestion ul {
   list-style: none;
 }
-.koemei-blue {
+
+.koemei-blue,
+.koemei-highlight {
   color: #41b1e5;
 }
+
 .k-results .k-suggestion .MediaListItem-segments {
   margin: 0px 0 0 81px;
   overflow: hidden;
@@ -218,8 +222,9 @@
 .k-results .k-suggestion .MediaListItem-segments li a:hover {
   color: #41b1e5;
 }
-.k-results .k-suggestion .MediaListItem-segments li .time {
+.k-results .k-suggestion .MediaListItem-segments li .koemei-time {
   margin-right: 20px;
+  display: inline-block;
 }
 .k-results .k-suggestion .MediaListItem-segment {
   position: relative;
