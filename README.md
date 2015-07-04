@@ -34,11 +34,13 @@
 * `highlight`: If true pattern matches for the current query in text nodes will highlighted. Defaults to true.
 * `css`: When set will override custom css.
 * `fontcss`: When set will override custom font.
+* `highlightColor`: When set will override highlight/hover color.
 
 * `templates`:
   * `searching`: Rendered when `0` synchronous suggestions are available but asynchronous suggestions are expected. Can be either a HTML string or a precompiled template. If it's a precompiled template, the passed in context will contain `query`.
   * `noResults`: Rendered when `0` suggestions are available for the given query. Can be either a HTML string or a precompiled template. If it's a precompiled template, the passed in context will contain `query`.
   * `suggestion`: Used to render a single suggestion. If set, this has to be a precompiled template. The associated suggestion object will serve as the context. Defaults to the value of `display` wrapped in a `div` tag i.e. `<div>{{value}}</div>`.
+
 
 
 

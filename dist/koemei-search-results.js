@@ -113,7 +113,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 
 	      css: 'http://iplusstd.com/koemei/search-results-plugin/dist/style.min.css',
-	      fontcss: 'https://koemei.com/css/font.css'
+	      fontcss: 'https://koemei.com/css/font.css',
+	      highlightColor: ''
 	    };
 	  },
 
@@ -133,6 +134,43 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // append font css to page
 	    if (this.options.fontcss) utils.loadExternalAsset(this.options.fontcss, 'css');
+
+	    this._buildCustomStyle();
+	  },
+
+	  _buildCustomStyle: function () {
+	    var css = '';
+
+	    // add css modifications
+	    if (this.options.highlightColor) {
+	      css += '.koemei-highlight,' +
+	        '.k-results .k-suggestion .koemei-highlight,' +
+	        '.k-results .k-suggestion .MediaListItem-segments li a:hover,' +
+	        '.k-results .k-suggestion.openOnSelect:hover .title-item,' +
+	        '.k-results .k-suggestion .wrapper-info:hover .title-item,' +
+	        '.koemei-cursor .wrapper-info .title-item,' +
+	        '.k-results .k-suggestion.openOnSelect:hover .date-item,' +
+	        '.k-results .k-suggestion .wrapper-info:hover .date-item,' +
+	        '.koemei-cursor .wrapper-info .date-item' +
+	          '{color:' + this.options.highlightColor + ' !important;}';
+
+	      css += '.k-results .k-suggestion .img-item:after { '+
+	        'background:' + this.options.highlightColor + ' !important;}';
+	    }
+
+	    if (css !== '') {
+	      body = document.body || document.getElementsByTagName('body')[0],
+	      style = document.createElement('style');
+
+	      style.type = 'text/css';
+	      if (style.styleSheet){
+	        style.styleSheet.cssText = css;
+	      } else {
+	        style.appendChild(document.createTextNode(css));
+	      }
+
+	      body.appendChild(style);
+	    }
 	  },
 
 	  _linkElements: function(inputEl, resultEl) {
@@ -344,7 +382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      '<a href="' + result.srcUrl + '">' +
 	      '<div class="wrapper-title">' +
 	      '<div class="title-item">' + result.name + '</div>' +
-	      '<div class="date-item">' + date + ' · by ' + result.creator.displayName + '</div>' +
+	      '<div class="date-item">' + date + '</div>' +
 	      '</div>' +
 	      '</a>' +
 	      ' </div>' +
