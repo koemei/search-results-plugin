@@ -289,7 +289,7 @@ assign(KoemeiSearchResults.prototype, {
         time = matchingTranscript.start / 100;
         suggestion += '<li>' +
           '<a href="' + utils.addParameter(result.srcUrl, 'time', time) + '">' +
-          '<span class="koemei-blue time">' + utils.toHHMMSS(time) + '</span> ' +
+          '<div class="koemei-highlight koemei-time">' + utils.toHHMMSS(time) + '</div> ' +
           '<div class="MediaListItem-segment">' + matchingTranscript.highlight + '</div>' +
           '</a>' +
           '</li>';
