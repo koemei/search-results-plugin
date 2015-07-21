@@ -4,13 +4,15 @@ var assign = require('object-assign');
 var Bloodhound = require('typeahead.js/dist/bloodhound')
 
 function KoemeiSearchResults(o) {
-  this.options = assign(this.defaults(), o);
+  var _this = this;
 
-  this.EMBED_KEY = this.options.key || '';
-  this.limit = this.options.limit || 5;
+  _this.options = assign(_this.defaults(), o);
 
-  if (!this._validateEmbedKey()) {
-    this.blocked = true;
+  _this.EMBED_KEY = _this.options.key || '';
+  _this.limit = _this.options.limit || 5;
+
+  if (!_this._validateEmbedKey()) {
+    _this.blocked = true;
     return;
   }
 }
@@ -27,7 +29,12 @@ assign(KoemeiSearchResults.prototype, {
       width: '500px', // set to null/auto to remove width
       prefetch: true,
       showTranscript: true,
-      target: 'self',
+      target: '_self',
+
+      onSelectFn: function (result, time) {
+        return _this._defaultOnSelectFn(result, time);
+      },
+
       openOnSelect: false,
       limit: 5,
       mode: 'onType', // 'onEnter' or 'onType'
@@ -285,7 +292,7 @@ assign(KoemeiSearchResults.prototype, {
   _getSuggestionElement: function(suggestion) {
     var suggestionEl = document.createElement('div');
     suggestionEl.className = 'k-suggestion'
-    suggestionEl.innerHTML = this.options.templates.suggestion(suggestion);
+    suggestionEl.appendChild(this.options.templates.suggestion(suggestion));
 
     return suggestionEl;
   },
@@ -293,54 +300,117 @@ assign(KoemeiSearchResults.prototype, {
   _getSuggestionTemplate: function(result) {
     var _this = this;
 
-    var image = result.pictureUrl || 'http://d3m8q0cwynqlq3.cloudfront.net/images/koemei-media-thumb.jpg';
-    var date = result.created.substring(0, 10);
-    var suggestion = '';
+    // main element
+    var mainElement = document.createElement('div');
 
-    var length = utils.toHHMMSS(result.length)
+    if (_this.options.openOnSelect) {
+      mainElement.className = 'openOnSelect';
+      mainElement.onclick = function() {
+        _this.options.onSelectFn(result);
+      }
+    }
 
-    var extracClass = (_this.options.openOnSelect) ? 'openOnSelect' : '';
-    var suggestion = '<div class="' + extracClass + '">' +
-      '<div class="wrapper-item">' +
-      '<div class="wrapper-info">' +
-      '<a class="img-item koemei-pullLeft" href="' + result.srcUrl + '">' +
-      '<div class="gradient"></div>' +
-      '<img src="' + image + '" alt="">' +
-      '<div class="time-item">' + length + '</div>' +
-      '</a>' +
-      '<a href="' + result.srcUrl + '">' +
-      '<div class="wrapper-title">' +
-      '<div class="title-item">' + result.name + '</div>' +
-      '<div class="date-item">' + date + '</div>' +
-      '</div>' +
-      '</a>' +
-      ' </div>' +
-      '</div>';
+    // main wrapper
+    var wrapperItem = document.createElement('div');
+    wrapperItem.className = "wrapper-item";
 
+    var wrapperInfo = document.createElement('div');
+    wrapperInfo.className = "wrapper-info";
+
+    wrapperItem.appendChild(wrapperInfo);
+    mainElement.appendChild(wrapperItem);
+
+    // image
+    var imgLinkEl = document.createElement('a');
+    imgLinkEl.className = "img-item koemei-pullLeft";
+    imgLinkEl.onclick = function() {
+      _this.options.onSelectFn(result);
+    }
+
+    var gradientDiv = document.createElement('div');
+    gradientDiv.className = "gradient";
+
+    var imgCnt = document.createElement('img');
+    imgCnt.src = result.pictureUrl || 'http://d3m8q0cwynqlq3.cloudfront.net/images/koemei-media-thumb.jpg';
+
+    var timeDiv = document.createElement('div');
+    timeDiv.className = "time-item";
+    timeDiv.innerHTML = utils.toHHMMSS(result.length);
+
+    imgLinkEl.appendChild(gradientDiv);
+    imgLinkEl.appendChild(imgCnt);
+    imgLinkEl.appendChild(timeDiv);
+    wrapperInfo.appendChild(imgLinkEl);
+
+    // title
+    var titleLinkEl = document.createElement('a');
+    titleLinkEl.onclick = function() {
+      _this.options.onSelectFn(result);
+    }
+
+    var wrapperTitleDiv = document.createElement('div');
+    wrapperTitleDiv.className = "wapper-title";
+
+    var tittleDiv = document.createElement('div');
+    tittleDiv.className = "title-item";
+    tittleDiv.innerHTML = result.name;
+
+    var dateDiv = document.createElement('div');
+    dateDiv.className = "date-item";
+    dateDiv.innerHTML = result.created.substring(0, 10);
+
+    wrapperTitleDiv.appendChild(tittleDiv);
+    wrapperTitleDiv.appendChild(dateDiv);
+    titleLinkEl.appendChild(wrapperTitleDiv);
+    wrapperInfo.appendChild(titleLinkEl);
+
+    // matching transcripts
     if (_this.options.showTranscript && result.matchingTranscripts && result.matchingTranscripts.list) {
-      suggestion += '<ul class="MediaListItem-segments active">';
+      var transUnorderedList = document.createElement('ul');
+      transUnorderedList.className = "MediaListItem-segments active";
+      mainElement.appendChild(transUnorderedList)
+
       var matchingTranscript;
       var time;
 
       for (var i = 0; i < 2 && i < result.matchingTranscripts.list.length; i++) {
         matchingTranscript = result.matchingTranscripts.list[i];
         time = matchingTranscript.start / 100;
-        suggestion += '<li>' +
-          '<a href="' + utils.addParameter(result.srcUrl, 'time', time) + '">' +
-          '<div class="koemei-highlight koemei-time">' + utils.toHHMMSS(time) + '</div> ' +
-          '<div class="MediaListItem-segment">' + matchingTranscript.highlight + '</div>' +
-          '</a>' +
-          '</li>';
+
+        var listItem = document.createElement('li');
+        var listLink = document.createElement('a');
+        listLink.onclick = function() {
+          _this.options.onSelectFn(result, time);
+        }
+
+        var listTimeDiv = document.createElement('div');
+        listTimeDiv.className = "koemei-highlight koemei-time";
+        listTimeDiv.innerHTML = utils.toHHMMSS(time);
+
+        var listHighlightDiv = document.createElement('div');
+        listHighlightDiv.className = "MediaListItem-segment";
+        listHighlightDiv.innerHTML = matchingTranscript.highlight;
+
+        listLink.appendChild(listTimeDiv);
+        listLink.appendChild(listHighlightDiv);
+        listItem.appendChild(listLink);
+        transUnorderedList.appendChild(listItem);
       }
-      suggestion += '</ul>';
     }
 
-    suggestion += '</div>';
-    return suggestion;
+    return mainElement;
+  },
+
+  _defaultOnSelectFn: function (result, time) {
+    var url = (time) ? this.addParamtoLink(result.srcUrl, 'time', time) : result.srcUrl;
+    window.open(url, this.options.target);
   },
 
   // ### public
-  initialize: function(inputEl, resultEl) {
+  addParamtoLink: function (link, paramName, param) {
+    return utils.addParameter(link, paramName, param);
+  },
+  initialize: function (inputEl, resultEl) {
     return this._initialize(inputEl, resultEl);
   },
 

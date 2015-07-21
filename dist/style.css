@@ -60,6 +60,9 @@
   border-bottom: 1px solid #f2f2f2;
   padding: 10px;
 }
+.k-results .k-suggestion a {
+  cursor: pointer;
+}
 .k-results .k-suggestion:last-child{
   border-bottom: none;
 }

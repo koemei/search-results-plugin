@@ -24,8 +24,9 @@
 * `key`: Koemei Embed Key
 * `width`: width of the results element
 * `showTranscript`: If true will display matched transcripts. Defaults to true
+* `onSelectFn`: Callback function when a result is selected. `function (result, time)` time is passed only when user clicks on transcript line
+* `target`: target window when suggestion is selected. Defaults to "_self". Works with default `onSelectFn`
 * `openOnSelect`: If true when user clicks anywhere on the result it will open main video. If false, user should click on thumb/title to open video. Defaults to false
-* `target`: target window when suggestion is selected. Defaults to self
 * `prefetch`: prefetches popular vidoes. Defaults to true
 * `limit`: limit suggestions. Defaults to 5
 * `mode`: 'onEnter' or 'onType' defaults to 'onType'
