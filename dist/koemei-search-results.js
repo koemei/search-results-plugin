@@ -197,7 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  _setWidth: function() {
-	    if (this.options.width) this.linkedEl.style.width = this.options.width
+	    if (this.options.width && this.linkedEl) this.linkedEl.style.width = this.options.width
 	  },
 
 	  _initialize: function(inputEl, resultEl) {
@@ -340,17 +340,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _renderSearching: function(query) {
 	    this._resetSuggestionElement();
-	    this.resultsDom.innerHTML = '<div class="k-searching">' + this.options.templates.searching + '</div>';
+	    if (this.resultsDom) {
+	      this.resultsDom.innerHTML = '<div class="k-searching">' + this.options.templates.searching + '</div>';
+	    }
 	  },
 
 	  _renderNoResults: function(query) {
 	    this._resetSuggestionElement();
-	    this.resultsDom.innerHTML = '<div class="k-no-results">' + this.options.templates.noResults + '</div>';
+	    if (this.resultsDom) {
+	      this.resultsDom.innerHTML = '<div class="k-no-results">' + this.options.templates.noResults + '</div>';
+	    }
 	  },
 
 	  _empty: function() {
 	    this._resetSuggestionElement();
-	    this.resultsDom.innerHTML = '';
+	    if (this.resultsDom) {
+	      this.resultsDom.innerHTML = '';
+	    }
 	  },
 
 	  _getFooter: function(query, suggestions) {
