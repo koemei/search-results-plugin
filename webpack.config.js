@@ -27,9 +27,14 @@ module.exports = {
     libraryTarget: 'umd'
   },
 
-  externals: [{
-    "jquery": 'jQuery'
-  }],
+  externals: {
+    'jquery': {
+      root: 'jQuery',
+      commonjs: 'jquery',
+      commonjs2: 'jquery',
+      amd: 'jquery'
+    }
+  },
 
   module: {
     loaders: [{

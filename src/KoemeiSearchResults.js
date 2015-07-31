@@ -111,19 +111,19 @@ assign(KoemeiSearchResults.prototype, {
 
   _linkElements: function(inputEl, resultEl) {
     if (!inputEl) return utils.logError('first parameter must be an input field.');
-    if (!resultEl) return utils.logError('second parameter must be a dom element.');
 
     this.input = new KoemeiInput(inputEl, this.options);
 
-    this.linkedEl = resultEl;
-    this.linkedEl.innerHTML = '';
+    if (resultEl) {
+      this.linkedEl = resultEl;
+      this.linkedEl.innerHTML = '';
 
-    var cnt = document.createElement('div');
-    cnt.className = 'k-results';
-    this.linkedEl.appendChild(cnt);
+      var cnt = document.createElement('div');
+      cnt.className = 'k-results';
+      this.linkedEl.appendChild(cnt);
 
-    this.resultsDom = cnt;
-
+      this.resultsDom = cnt;
+    }
   },
   _setWidth: function() {
     if (this.options.width) this.linkedEl.style.width = this.options.width
