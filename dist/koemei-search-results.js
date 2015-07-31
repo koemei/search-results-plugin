@@ -105,7 +105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      onSelectFn: function (result, time) {
 	        return _this._defaultOnSelectFn(result, time);
 	      },
-
+	      customRendering: false,
 	      openOnSelect: false,
 	      limit: 5,
 	      mode: 'onType', // 'onEnter' or 'onType'
@@ -499,7 +499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    _this.engine.search(query, sync, async);
-	    !syncCalled && sync([]);
+
 
 	    function sync(suggestions) {
 	      if (syncCalled) return;
@@ -507,7 +507,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      syncCalled = true;
 	      suggestions = (suggestions || []).slice(0, _this.limit);
 	      rendered = suggestions.length;
-
+	      if (_this.options.customRendering) {
+	        return _this.options.customRendering(query, suggestions);
+	      }
 	      _this._overwrite(query, suggestions);
 	    }
 
@@ -520,7 +522,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this.cancel = utils.noop;
 
 	        rendered += suggestions.length;
-
+	        if (_this.options.customRendering) {
+	          return _this.options.customRendering(query, suggestions);
+	        }
 	        _this._append(query, suggestions.slice(0, _this.limit - rendered));
 	      }
 	    }

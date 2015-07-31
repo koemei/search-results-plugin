@@ -34,7 +34,7 @@ assign(KoemeiSearchResults.prototype, {
       onSelectFn: function (result, time) {
         return _this._defaultOnSelectFn(result, time);
       },
-
+      customRendering: false,
       openOnSelect: false,
       limit: 5,
       mode: 'onType', // 'onEnter' or 'onType'
@@ -428,7 +428,7 @@ assign(KoemeiSearchResults.prototype, {
     };
 
     _this.engine.search(query, sync, async);
-    !syncCalled && sync([]);
+
 
     function sync(suggestions) {
       if (syncCalled) return;
@@ -436,7 +436,9 @@ assign(KoemeiSearchResults.prototype, {
       syncCalled = true;
       suggestions = (suggestions || []).slice(0, _this.limit);
       rendered = suggestions.length;
-
+      if (_this.options.customRendering) {
+        return _this.options.customRendering(query, suggestions);
+      }
       _this._overwrite(query, suggestions);
     }
 
@@ -449,7 +451,9 @@ assign(KoemeiSearchResults.prototype, {
         _this.cancel = utils.noop;
 
         rendered += suggestions.length;
-
+        if (_this.options.customRendering) {
+          return _this.options.customRendering(query, suggestions);
+        }
         _this._append(query, suggestions.slice(0, _this.limit - rendered));
       }
     }
