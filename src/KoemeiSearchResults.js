@@ -133,7 +133,9 @@ assign(KoemeiSearchResults.prototype, {
     if (this.blocked) return;
 
     this._linkElements(inputEl, resultEl);
-    this._addCSS();
+    if (!this.options.customRendering) {
+      this._addCSS();
+    }
     this.clear();
     this._setWidth();
     this._initEngine();
