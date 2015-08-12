@@ -105,7 +105,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      onSelectFn: function (result, time) {
 	        return _this._defaultOnSelectFn(result, time);
 	      },
-	      customRendering: false,
 	      openOnSelect: false,
 	      limit: 5,
 	      mode: 'onType', // 'onEnter' or 'onType'
@@ -118,6 +117,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return _this._getSuggestionTemplate(result);
 	        }
 	      },
+
+	      customRendering: false,
+	      customOverwrite: function (query, suggestions) {},
+	      customAppend: function (query, suggestions) {},
 
 	      css: 'http://iplusstd.com/koemei/search-results-plugin/dist/style.min.css',
 	      fontcss: 'https://koemei.com/css/font.css',
@@ -277,6 +280,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // defaults to empty array
 	    suggestions = suggestions || [];
 
+	    if (this.options.customRendering) {
+	      if (this.options.customOverwrite instanceof Function) {
+	        this.options.customOverwrite(query, suggestions);
+	      }
+
+	      return;
+	    }
+
 	    // got suggestions: overwrite dom with suggestions
 	    if (suggestions.length) {
 	      this._renderSuggestions(query, suggestions);
@@ -295,6 +306,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _append: function(query, suggestions) {
 	    suggestions = suggestions || [];
+
+	    if (this.options.customRendering) {
+	      if (this.options.customAppend instanceof Function) {
+	       this.options.customAppend(query, suggestions);
+	      }
+
+	      return;
+	    }
 
 	    // got suggestions, sync suggestions exist: append suggestions to dom
 	    if (suggestions.length && this.suggestionEl) {
@@ -515,9 +534,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      syncCalled = true;
 	      suggestions = (suggestions || []).slice(0, _this.limit);
 	      rendered = suggestions.length;
-	      if (_this.options.customRendering) {
-	        return _this.options.customRendering(query, suggestions);
-	      }
+
 	      _this._overwrite(query, suggestions);
 	    }
 
@@ -530,9 +547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this.cancel = utils.noop;
 
 	        rendered += suggestions.length;
-	        if (_this.options.customRendering) {
-	          return _this.options.customRendering(query, suggestions);
-	        }
+
 	        _this._append(query, suggestions.slice(0, _this.limit - rendered));
 	      }
 	    }

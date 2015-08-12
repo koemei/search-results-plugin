@@ -34,7 +34,6 @@ assign(KoemeiSearchResults.prototype, {
       onSelectFn: function (result, time) {
         return _this._defaultOnSelectFn(result, time);
       },
-      customRendering: false,
       openOnSelect: false,
       limit: 5,
       mode: 'onType', // 'onEnter' or 'onType'
@@ -47,6 +46,10 @@ assign(KoemeiSearchResults.prototype, {
           return _this._getSuggestionTemplate(result);
         }
       },
+
+      customRendering: false,
+      customOverwrite: function (query, suggestions) {},
+      customAppend: function (query, suggestions) {},
 
       css: 'http://iplusstd.com/koemei/search-results-plugin/dist/style.min.css',
       fontcss: 'https://koemei.com/css/font.css',
@@ -206,6 +209,14 @@ assign(KoemeiSearchResults.prototype, {
     // defaults to empty array
     suggestions = suggestions || [];
 
+    if (this.options.customRendering) {
+      if (this.options.customOverwrite instanceof Function) {
+        this.options.customOverwrite(query, suggestions);
+      }
+
+      return;
+    }
+
     // got suggestions: overwrite dom with suggestions
     if (suggestions.length) {
       this._renderSuggestions(query, suggestions);
@@ -224,6 +235,14 @@ assign(KoemeiSearchResults.prototype, {
 
   _append: function(query, suggestions) {
     suggestions = suggestions || [];
+
+    if (this.options.customRendering) {
+      if (this.options.customAppend instanceof Function) {
+       this.options.customAppend(query, suggestions);
+      }
+
+      return;
+    }
 
     // got suggestions, sync suggestions exist: append suggestions to dom
     if (suggestions.length && this.suggestionEl) {
@@ -444,9 +463,7 @@ assign(KoemeiSearchResults.prototype, {
       syncCalled = true;
       suggestions = (suggestions || []).slice(0, _this.limit);
       rendered = suggestions.length;
-      if (_this.options.customRendering) {
-        return _this.options.customRendering(query, suggestions);
-      }
+
       _this._overwrite(query, suggestions);
     }
 
@@ -459,9 +476,7 @@ assign(KoemeiSearchResults.prototype, {
         _this.cancel = utils.noop;
 
         rendered += suggestions.length;
-        if (_this.options.customRendering) {
-          return _this.options.customRendering(query, suggestions);
-        }
+
         _this._append(query, suggestions.slice(0, _this.limit - rendered));
       }
     }
