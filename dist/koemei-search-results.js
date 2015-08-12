@@ -1,10 +1,10 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jQuery"));
+		module.exports = factory(require("jquery"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jQuery"], factory);
+		define(["jquery"], factory);
 	else if(typeof exports === 'object')
-		exports["KoemeiSearchResults"] = factory(require("jQuery"));
+		exports["KoemeiSearchResults"] = factory(require("jquery"));
 	else
 		root["KoemeiSearchResults"] = factory(root["jQuery"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_8__) {
@@ -105,7 +105,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      onSelectFn: function (result, time) {
 	        return _this._defaultOnSelectFn(result, time);
 	      },
-
 	      openOnSelect: false,
 	      limit: 5,
 	      mode: 'onType', // 'onEnter' or 'onType'
@@ -118,6 +117,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return _this._getSuggestionTemplate(result);
 	        }
 	      },
+
+	      customRendering: false,
+	      customOverwrite: function (query, suggestions) {},
+	      customAppend: function (query, suggestions) {},
 
 	      css: 'http://iplusstd.com/koemei/search-results-plugin/dist/style.min.css',
 	      fontcss: 'https://koemei.com/css/font.css',
@@ -182,29 +185,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _linkElements: function(inputEl, resultEl) {
 	    if (!inputEl) return utils.logError('first parameter must be an input field.');
-	    if (!resultEl) return utils.logError('second parameter must be a dom element.');
 
 	    this.input = new KoemeiInput(inputEl, this.options);
 
-	    this.linkedEl = resultEl;
-	    this.linkedEl.innerHTML = '';
+	    if (resultEl) {
+	      this.linkedEl = resultEl;
+	      this.linkedEl.innerHTML = '';
 
-	    var cnt = document.createElement('div');
-	    cnt.className = 'k-results';
-	    this.linkedEl.appendChild(cnt);
+	      var cnt = document.createElement('div');
+	      cnt.className = 'k-results';
+	      this.linkedEl.appendChild(cnt);
 
-	    this.resultsDom = cnt;
-
+	      this.resultsDom = cnt;
+	    }
 	  },
 	  _setWidth: function() {
-	    if (this.options.width) this.linkedEl.style.width = this.options.width
+	    if (this.options.width && this.linkedEl) this.linkedEl.style.width = this.options.width
 	  },
 
 	  _initialize: function(inputEl, resultEl) {
 	    if (this.blocked) return;
 
 	    this._linkElements(inputEl, resultEl);
-	    this._addCSS();
+	    if (!this.options.customRendering) {
+	      this._addCSS();
+	    }
 	    this.clear();
 	    this._setWidth();
 	    this._initEngine();
@@ -275,6 +280,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // defaults to empty array
 	    suggestions = suggestions || [];
 
+	    if (this.options.customRendering) {
+	      if (this.options.customOverwrite instanceof Function) {
+	        this.options.customOverwrite(query, suggestions);
+	      }
+
+	      return;
+	    }
+
 	    // got suggestions: overwrite dom with suggestions
 	    if (suggestions.length) {
 	      this._renderSuggestions(query, suggestions);
@@ -293,6 +306,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _append: function(query, suggestions) {
 	    suggestions = suggestions || [];
+
+	    if (this.options.customRendering) {
+	      if (this.options.customAppend instanceof Function) {
+	       this.options.customAppend(query, suggestions);
+	      }
+
+	      return;
+	    }
 
 	    // got suggestions, sync suggestions exist: append suggestions to dom
 	    if (suggestions.length && this.suggestionEl) {
@@ -340,17 +361,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _renderSearching: function(query) {
 	    this._resetSuggestionElement();
-	    this.resultsDom.innerHTML = '<div class="k-searching">' + this.options.templates.searching + '</div>';
+	    if (this.resultsDom) {
+	      this.resultsDom.innerHTML = '<div class="k-searching">' + this.options.templates.searching + '</div>';
+	    }
 	  },
 
 	  _renderNoResults: function(query) {
 	    this._resetSuggestionElement();
-	    this.resultsDom.innerHTML = '<div class="k-no-results">' + this.options.templates.noResults + '</div>';
+	    if (this.resultsDom) {
+	      this.resultsDom.innerHTML = '<div class="k-no-results">' + this.options.templates.noResults + '</div>';
+	    }
 	  },
 
 	  _empty: function() {
 	    this._resetSuggestionElement();
-	    this.resultsDom.innerHTML = '';
+	    if (this.resultsDom) {
+	      this.resultsDom.innerHTML = '';
+	    }
 	  },
 
 	  _getFooter: function(query, suggestions) {
@@ -499,7 +526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    _this.engine.search(query, sync, async);
-	    !syncCalled && sync([]);
+
 
 	    function sync(suggestions) {
 	      if (syncCalled) return;

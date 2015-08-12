@@ -42,6 +42,9 @@
   * `noResults`: Rendered when `0` suggestions are available for the given query. Can be either a HTML string or a precompiled template. If it's a precompiled template, the passed in context will contain `query`.
   * `suggestion`: Used to render a single suggestion. If set, this has to be a precompiled template. The associated suggestion object will serve as the context. Defaults to the value of `display` wrapped in a `div` tag i.e. `<div>{{value}}</div>`.
 
+* `customRendering`: Enable to override rendering of search results. Default to false.
+* `customOverwrite`: `function (query, suggestions) {}`. Called when a new search happens. Ex: clear old render and add new ones.
+* `customAppend`: `function (query, suggestions) {}`. Called when new results for previous search are available (when more than one source is used).
 
 
 

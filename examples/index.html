@@ -13,11 +13,20 @@
 <body id="index" class="home">
 
   <div id="main">
+    <h2>Custom rendering (see console)</h2>
+
     <input type="text" id="search" value="" placeholder="search ..." />
 
     <div class="cnt">
-      <h2>Search Results</h2>
       <div id="k-results"></div>
+    </div>
+
+    <h2>Search Results</h2>
+
+    <input type="text" id="search1" value="" placeholder="search ..." />
+
+    <div class="cnt">
+      <div id="k-results1"></div>
     </div>
 
   </div>
@@ -27,13 +36,27 @@
 
 <!-- Add Koemei search plugin js -->
 <link rel="stylesheet" href="../dist/style.min.css" type="text/css" />
-<script src="../dist/koemei-search-results.min.js"></script>
+<script src="__build__/koemei-search-results.js"></script>
 
 <!-- Add demo js -->
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
-    var koemeiSearchResults = new KoemeiSearchResults({key: 'acd6fbc51ef2405ea7e7e3c384b5042f', css: ''});
-    koemeiSearchResults.initialize(document.getElementById('search'), document.getElementById('k-results'));
+    var koemeiSearchResults = new KoemeiSearchResults({
+      key: 'acd6fbc51ef2405ea7e7e3c384b5042f',
+      customRendering: true,
+      customOverwrite: function(query, res) {
+        console.log('override', query, res);
+      },
+      customAppend: function(query, res) {
+        console.log('append', query, res);
+      }
+    });
+
+    var koemeiSearchResults1 = new KoemeiSearchResults({
+      key: 'acd6fbc51ef2405ea7e7e3c384b5042f'
+    });
+    koemeiSearchResults.initialize(document.getElementById('search'));
+    koemeiSearchResults1.initialize(document.getElementById('search1'), document.getElementById('k-results1'));
   });
 </script>
 
