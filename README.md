@@ -55,10 +55,10 @@ npm install
 npm start
 
 ```
-go to http://localhost:8000
+go to http://localhost:8000/examples
 
 ```
 npm run build && npm start
 
 ```
-go to http://localhost:8000/prod.html
+go to http://localhost:8000/examples/prod.html

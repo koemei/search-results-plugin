@@ -93,7 +93,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  defaults: function() {
 	    var _this = this;
 	    return {
-	      domain: 'https://koemei.com',
+	      domain: 'https://spexian.com',
 	      searchAPI: '/api/search/files',
 	      prefetchAPI: '/api/files',
 
@@ -120,7 +120,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 
 	      css: 'http://iplusstd.com/koemei/search-results-plugin/dist/style.min.css',
-	      fontcss: 'https://koemei.com/css/font.css',
+	      fontcss: 'https://spexian.com/css/font.css',
 	      highlightColor: ''
 	    };
 	  },
@@ -128,7 +128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // ### private
 	  _validateEmbedKey: function() {
 	    if (!this.EMBED_KEY || this.EMBED_KEY === '') {
-	      utils.logError('Koemei\'s Embed Key is required');
+	      utils.logError('Spexian\'s Embed Key is required');
 	      return false;
 	    }
 
@@ -356,7 +356,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _getFooter: function(query, suggestions) {
 	    var footer = document.createElement('div');
 	    footer.className = 'k-results-footer'
-	    footer.innerHTML = 'powered by <a href="//koemei.com" target="_blank"><img src="https://koemei.com/img/logo.svg" alt="koemei" /></a>';
+	    footer.innerHTML = 'powered by <a href="//spexian.com" target="_blank"><img src="https://spexian.com/img/logo.svg" alt="spexian" /></a>';
 	    return footer;
 	  },
 
